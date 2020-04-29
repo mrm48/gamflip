@@ -31,8 +31,8 @@ class FlipswitchWindow(Gtk.Window):
         label1.set_margin_bottom(10)
         grid.add(label1)
         flipswitch = Gtk.Switch(name="Switch")
-        flipswitch.set_margin_left(50)
-        flipswitch.set_margin_right(50)
+        flipswitch.set_margin_left(85)
+        flipswitch.set_margin_right(15)
         flipswitch.set_margin_bottom(10)
         flipswitch.connect("notify::active", self.on_switch_activated)
         flipswitch.set_active(False)
@@ -40,8 +40,8 @@ class FlipswitchWindow(Gtk.Window):
         
         # Row 2 - Source (Webcam)
         label2 = Gtk.Label(label="Webcam:")
-        label2.set_margin_bottom(10)
-        self.combobox_source.set_margin_bottom(10)
+        label2.set_margin_bottom(5)
+        self.combobox_source.set_margin_bottom(5)
         grid.attach_next_to(label2,label1,Gtk.PositionType.BOTTOM,1,2)
         grid.attach_next_to(self.combobox_source,label2,Gtk.PositionType.RIGHT,2,1)
         
