@@ -12,40 +12,43 @@ class FlipswitchWindow(Gtk.Window):
     combobox_source = Gtk.ComboBoxText()
 
     def __init__(self):
+
+        # Create Window and Grid
         Gtk.Window.__init__(self, title="gamflip")
         self.set_border_width(10)
 
-        vbox = Gtk.VBox(spacing=6)
+        grid = Gtk.Grid()
+        self.add(grid)
 
-        self.add(vbox)
-        hbox = Gtk.Box(spacing=6)
-        hbox2 = Gtk.Box(spacing=6)
-        hbox3 = Gtk.Box(spacing=6)
-        vbox.add(hbox)
-        vbox.add(hbox2)
-        vbox.add(hbox3)
-
+        # Create and add devices to dropdowns
         self.combobox = gamflip_utilities.get_dev_list(self.combobox)
         self.combobox_source = gamflip_utilities.get_dev_list(self.combobox_source)
         self.combobox_source.set_active(0)
         self.combobox.set_active(0)
 
-        label = Gtk.Label(label="Webcam flip state:")
-        hbox.pack_start(label, True, True, 0)
-
+        # Row 1 (Switch)
+        label1 = Gtk.Label(label="Webcam flip state:")
+        label1.set_margin_bottom(10)
+        grid.add(label1)
         flipswitch = Gtk.Switch(name="Switch")
+        flipswitch.set_margin_left(50)
+        flipswitch.set_margin_right(50)
+        flipswitch.set_margin_bottom(10)
         flipswitch.connect("notify::active", self.on_switch_activated)
         flipswitch.set_active(False)
-        hbox.pack_start(flipswitch, True, True, 0)
-        vbox.pack_start(hbox, True, True, 0)
-        label = Gtk.Label(label="Webcam:")
-        hbox2.pack_start(label, True, True, 0)
-        hbox2.pack_start(self.combobox_source, True, True, 0)
-        vbox.pack_start(hbox2, True, True, 0) 
-        label = Gtk.Label(label="Loopback device:")
-        hbox3.pack_start(label, True, True, 0)
-        hbox3.pack_start(self.combobox, True, True, 0)
-        vbox.pack_start(hbox3, True, True, 0)
+        grid.attach_next_to(flipswitch,label1,Gtk.PositionType.RIGHT,3,1)
+        
+        # Row 2 - Source (Webcam)
+        label2 = Gtk.Label(label="Webcam:")
+        label2.set_margin_bottom(10)
+        self.combobox_source.set_margin_bottom(10)
+        grid.attach_next_to(label2,label1,Gtk.PositionType.BOTTOM,1,2)
+        grid.attach_next_to(self.combobox_source,label2,Gtk.PositionType.RIGHT,2,1)
+        
+        # Row 3 - Loopback Device
+        label3 = Gtk.Label(label="Loopback device:")
+        grid.attach_next_to(label3,label2,Gtk.PositionType.BOTTOM,1,2)
+        grid.attach_next_to(self.combobox,label3,Gtk.PositionType.RIGHT,2,1)
 
     def on_switch_activated(self, switch, gparam):
         if switch.get_active():
