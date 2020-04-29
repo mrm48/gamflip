@@ -19,5 +19,10 @@ def check_module(mod):
     else:
         return mod
 
-def get_dev_list():
-    return subprocess.check_output(['v4l2-ctl --list-devices | grep /dev/']).decode("utf-8")
+def get_dev_list(combobox):
+    devices = ""
+    dev_list_output = subprocess.check_output(['v4l2-ctl', '--list-devices']).decode("utf-8")
+    for device in dev_list_output.splitlines():
+        if "/dev/" in device:
+           combobox.append_text(device.strip()) 
+    return combobox 

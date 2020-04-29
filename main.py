@@ -9,13 +9,13 @@ import gamflip_error
 # check dependencies
 dep_check = ""
 dep_check = gamflip_utilities.check_dependency("ffmpeg", dep_check)
-dep_check = gamflip_utilities.check_dependency("ffmpeg", dep_check)
-mod_check = gamflip_utilities.check_module("nvidia")
+dep_check = gamflip_utilities.check_dependency("v4l2-ctl", dep_check)
+mod_check = gamflip_utilities.check_module("v4l2loopback")
 
 # Render the window if all dependencies are met
 if len(dep_check) == 0 and mod_check == "all required modules found":
-    devices = gamflip_utilities.get_dev_list()
-    window = gamflip.FlipswitchWindow(devices)
+
+    window = gamflip.FlipswitchWindow()
     window.connect("destroy", Gtk.main_quit)
     window.show_all()
     Gtk.main()
