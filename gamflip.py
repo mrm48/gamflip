@@ -42,14 +42,19 @@ class FlipswitchWindow(Gtk.Window):
         label2 = Gtk.Label(label="Webcam")
         label2.set_margin_bottom(5)
         self.combobox_source.set_margin_bottom(5)
+        self.combobox_source.set_margin_left(10)
         grid.attach_next_to(label2,label1,Gtk.PositionType.BOTTOM,1,2)
         grid.attach_next_to(self.combobox_source,label2,Gtk.PositionType.RIGHT,2,1)
         
         # Row 3 - Loopback Device
         label3 = Gtk.Label(label="Loopback device")
         grid.attach_next_to(label3,label2,Gtk.PositionType.BOTTOM,1,2)
+        self.combobox.set_margin_left(10)
         grid.attach_next_to(self.combobox,label3,Gtk.PositionType.RIGHT,2,1)
 
+    # Action while flipping switch
+    # On: Use ffmpeg to flip the video
+    # Off: clean up running ffmpeg process
     def on_switch_activated(self, switch, gparam):
         if switch.get_active():
             state = "on"
