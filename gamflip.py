@@ -1,3 +1,6 @@
+# gamflip.py
+# Contains the main window class and is responsible for populating it
+
 import gi
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk

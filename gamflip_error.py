@@ -1,3 +1,6 @@
+# gamflip_error.py
+# If there is an error finding a dependency or a module, this class sets up the dialog to warn the user  
+
 import gi
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk

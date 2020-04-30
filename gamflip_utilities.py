@@ -1,3 +1,5 @@
+# gamflip_utilities.py
+# Gets information for gamflip using commandline tools
 import subprocess
 
 # Check for a dependency
