@@ -22,6 +22,7 @@ if len(dep_check) == 0 and mod_check == "all required modules found":
     window.connect("destroy", Gtk.main_quit)
     window.show_all()
     Gtk.main()
+    
 else:
     window = gamflip_error.GamflipErrorWindow(dep_check,mod_check)
     window.connect("destroy", Gtk.main_quit)

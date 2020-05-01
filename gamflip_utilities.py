@@ -28,3 +28,9 @@ def get_dev_list(combobox):
         if "/dev/" in device:
            combobox.append_text(device.strip()) 
     return combobox 
+
+def execute_filters(combobox_source,combobox):
+    subprocess.Popen(['ffmpeg', '-f', 'v4l2', '-i', combobox_source.get_active_text(), '-vf', 'vflip', '-f', 'v4l2', combobox.get_active_text()])
+
+def remove_filters():
+    subprocess.call(['killall', 'ffmpeg'])

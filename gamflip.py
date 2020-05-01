@@ -6,7 +6,6 @@ gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
 from gi.repository import GLib
 import gamflip_utilities
-import subprocess
 
 # Create a window with a single switch to flip the webcam
 class FlipswitchWindow(Gtk.Window):
@@ -61,8 +60,9 @@ class FlipswitchWindow(Gtk.Window):
     def on_switch_activated(self, switch, gparam):
         if switch.get_active():
             state = "on"
-            subprocess.Popen(['ffmpeg', '-f', 'v4l2', '-i', self.combobox_source.get_active_text(), '-vf', 'vflip', '-f', 'v4l2', self.combobox.get_active_text()])
+            gamflip_utilities.execute_filters(self.combobox_source,self.combobox)
         else:
             state = "off"
-            subprocess.call(['killall', 'ffmpeg'])
+            gamflip_utilities.remove_filters()
+            
         print("Switch was turned", state)
