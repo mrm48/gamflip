@@ -12,7 +12,8 @@ class FlipswitchWindow(Gtk.Window):
 
     combobox = Gtk.ComboBoxText()
     combobox_source = Gtk.ComboBoxText()
-
+    flipswitch = Gtk.Switch(name="Switch")
+   
     def __init__(self):
 
         # Create Window and Grid
@@ -32,13 +33,12 @@ class FlipswitchWindow(Gtk.Window):
         label1 = Gtk.Label(label="Webcam flip state")
         label1.set_margin_bottom(10)
         grid.add(label1)
-        flipswitch = Gtk.Switch(name="Switch")
-        flipswitch.set_margin_left(85)
-        flipswitch.set_margin_right(15)
-        flipswitch.set_margin_bottom(10)
-        flipswitch.connect("notify::active", self.on_switch_activated)
-        flipswitch.set_active(False)
-        grid.attach_next_to(flipswitch,label1,Gtk.PositionType.RIGHT,3,1)
+        self.flipswitch.set_margin_left(85)
+        self.flipswitch.set_margin_right(15)
+        self.flipswitch.set_margin_bottom(10)
+        self.flipswitch.connect("notify::active", self.on_switch_activated)
+        self.flipswitch.set_active(False)
+        grid.attach_next_to(self.flipswitch,label1,Gtk.PositionType.RIGHT,3,1)
         
         # Row 2 - Source (Webcam)
         label2 = Gtk.Label(label="Webcam")
@@ -64,5 +64,8 @@ class FlipswitchWindow(Gtk.Window):
         else:
             state = "off"
             gamflip_utilities.remove_filters()
-            
-        print("Switch was turned", state)
+
+    def cleanup(self, destroy):
+        if self.flipswitch.get_active():
+            gamflip_utilities.remove_filters()
+        Gtk.main_quit()

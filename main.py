@@ -19,7 +19,7 @@ mod_check = gamflip_utilities.check_module("v4l2loopback")
 if len(dep_check) == 0 and mod_check == "all required modules found":
 
     window = gamflip.FlipswitchWindow()
-    window.connect("destroy", Gtk.main_quit)
+    window.connect("destroy", window.cleanup)
     window.show_all()
     Gtk.main()
     
@@ -28,3 +28,4 @@ else:
     window.connect("destroy", Gtk.main_quit)
     window.show_all()
     Gtk.main()
+
