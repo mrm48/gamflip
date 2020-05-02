@@ -1,5 +1,6 @@
 # main.py
 # Shows the main window, unless kernel modules are not running or dependencies are not met
+# TODO: Try to determine the webcam and dummy video output automatically, warn if both webcam and loopback device are the same
 
 import gi
 gi.require_version("Gtk", "3.0")
