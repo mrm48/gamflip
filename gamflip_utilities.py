@@ -33,4 +33,4 @@ def execute_filters(combobox_source,combobox):
     subprocess.Popen(['ffmpeg', '-f', 'v4l2', '-i', combobox_source.get_active_text(), '-vf', 'vflip', '-f', 'v4l2', combobox.get_active_text()])
 
 def remove_filters():
-    subprocess.call(['killall', 'ffmpeg'])
+    subprocess.call(['killall', '-SIGHUP', 'ffmpeg'])
