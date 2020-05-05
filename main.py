@@ -1,6 +1,6 @@
 # main.py
 # Shows the main window, unless kernel modules are not running or dependencies are not met
-# TODO: Try to determine the webcam and dummy video output automatically, warn if both webcam and loopback device are the same
+# TODO: Try to add support for multiple video filters
 
 import gi
 gi.require_version("Gtk", "3.0")
@@ -22,8 +22,9 @@ if len(dep_check) == 0 and mod_check == "all required modules found":
     window = gamflip.FlipswitchWindow()
     window.connect("destroy", window.cleanup)
     window.show_all()
+    window.show_warning(gparam="")
     Gtk.main()
-    
+# Show an error window with details of each dependency that isn't met    
 else:
     window = gamflip_error.GamflipErrorWindow(dep_check,mod_check)
     window.connect("destroy", Gtk.main_quit)

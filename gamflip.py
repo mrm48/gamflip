@@ -27,7 +27,7 @@ class FlipswitchWindow(Gtk.Window):
         self.add(grid)
 
         # Create and add devices to dropdowns
-        self.combobox = gamflip_utilities.get_dev_list(self.combobox)
+        self.combobox = gamflip_utilities.set_default_loopback(self.combobox)
         self.combobox_source = gamflip_utilities.get_dev_list(self.combobox_source)
         self.combobox_source.set_active(0)
         self.combobox.set_active(0)
@@ -64,19 +64,14 @@ class FlipswitchWindow(Gtk.Window):
         self.combobox.connect("changed", self.show_warning)
         grid.attach_next_to(self.combobox,label3,Gtk.PositionType.RIGHT,2,1)
 
-        self.show_warning("")
-
     # Action while flipping switch
     # On: Use ffmpeg to flip the video
     # Off: clean up running ffmpeg process
     def on_switch_activated(self, switch, gparam):
         if switch.get_active():
-            state = "on"
             gamflip_utilities.execute_filters(self.combobox_source,self.combobox)
         else:
-            state = "off"
             gamflip_utilities.remove_filters()
-        show_warning()
 
     def cleanup(self, destroy):
         if self.flipswitch.get_active():
@@ -84,7 +79,7 @@ class FlipswitchWindow(Gtk.Window):
         Gtk.main_quit()
 
     def show_warning(self,gparam):
-        if self.combobox_source.get_active() == self.combobox.get_active():
+        if self.combobox_source.get_active_text() == self.combobox.get_active_text():
             self.warning.show()
             self.flipswitch.set_sensitive(False)
         else:
