@@ -5,6 +5,7 @@ import gi
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
 from gi.repository import GLib
+from gi.repository import Gio
 import gamflip_utilities
 
 # Create a window with a single switch to flip the webcam
@@ -13,6 +14,8 @@ class FlipswitchWindow(Gtk.Window):
     combobox = Gtk.ComboBoxText()
     combobox_source = Gtk.ComboBoxText()
     flipswitch = Gtk.Switch(name="Switch")
+    warning = Gtk.Image.new_from_gicon(Gio.ThemedIcon(name="dialog-warning-symbolic"),Gtk.IconSize.BUTTON)
+    warning.set_tooltip_text("Webcam and Loopback cannot be the same device, please use v4l2-ctl --list-devices to determine which devices to use.")
    
     def __init__(self):
 
@@ -33,26 +36,35 @@ class FlipswitchWindow(Gtk.Window):
         label1 = Gtk.Label(label="Webcam flip state")
         label1.set_margin_bottom(10)
         grid.add(label1)
-        self.flipswitch.set_margin_left(85)
+        self.warning.set_margin_left(75)
+        self.warning.set_margin_bottom(10)
+        grid.attach_next_to(self.warning,label1,Gtk.PositionType.RIGHT,1,1)
+        self.flipswitch.set_margin_left(10)
         self.flipswitch.set_margin_right(15)
         self.flipswitch.set_margin_bottom(10)
+        self.flipswitch.set_hexpand(False)
+        self.flipswitch.set_hexpand_set(True)
         self.flipswitch.connect("notify::active", self.on_switch_activated)
         self.flipswitch.set_active(False)
-        grid.attach_next_to(self.flipswitch,label1,Gtk.PositionType.RIGHT,3,1)
+        grid.attach_next_to(self.flipswitch,self.warning,Gtk.PositionType.RIGHT,1,1)
         
         # Row 2 - Source (Webcam)
         label2 = Gtk.Label(label="Webcam")
         label2.set_margin_bottom(5)
         self.combobox_source.set_margin_bottom(5)
-        self.combobox_source.set_margin_left(10)
+        self.combobox_source.set_margin_left(25)
+        self.combobox_source.connect("changed", self.show_warning)
         grid.attach_next_to(label2,label1,Gtk.PositionType.BOTTOM,1,2)
         grid.attach_next_to(self.combobox_source,label2,Gtk.PositionType.RIGHT,2,1)
         
         # Row 3 - Loopback Device
         label3 = Gtk.Label(label="Loopback device")
         grid.attach_next_to(label3,label2,Gtk.PositionType.BOTTOM,1,2)
-        self.combobox.set_margin_left(10)
+        self.combobox.set_margin_left(25)
+        self.combobox.connect("changed", self.show_warning)
         grid.attach_next_to(self.combobox,label3,Gtk.PositionType.RIGHT,2,1)
+
+        self.show_warning("")
 
     # Action while flipping switch
     # On: Use ffmpeg to flip the video
@@ -64,8 +76,21 @@ class FlipswitchWindow(Gtk.Window):
         else:
             state = "off"
             gamflip_utilities.remove_filters()
+        show_warning()
 
     def cleanup(self, destroy):
         if self.flipswitch.get_active():
             gamflip_utilities.remove_filters()
         Gtk.main_quit()
+
+    def show_warning(self,gparam):
+        if self.combobox_source.get_active() == self.combobox.get_active():
+            self.warning.show()
+            self.flipswitch.set_sensitive(False)
+        else:
+            self.warning.hide()
+            self.flipswitch.set_sensitive(True)
+            self.flipswitch.set_halign(Gtk.Align.END)
+
+
+
