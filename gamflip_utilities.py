@@ -48,8 +48,14 @@ class GamflipUtilities():
                 combobox.append_text(device.strip()) 
         return combobox 
 
-    def execute_filters(self, combobox_source,combobox):
-        subprocess.Popen(['ffmpeg', '-f', 'v4l2', '-i', combobox_source.get_active_text(), '-vf', 'vflip', '-f', 'v4l2', combobox.get_active_text()])
+    def execute_filters(self, flip, grey, source, loopback):
+        if flip and grey:
+            subprocess.Popen(['ffmpeg', '-f', 'v4l2', '-i', source, '-vf', 'vflip', '-f', 'v4l2', loopback, '-vf', 'vibrance', '-rbal', '-10', '-bbal', '-10', '-gbal', '-10'])
+        else:
+            if flip:
+                subprocess.Popen(['ffmpeg', '-f', 'v4l2', '-i', source, '-vf', 'vflip', '-f', 'v4l2', loopback])
+            else:
+                subprocess.Popen(['ffmpeg', '-f', 'v4l2', '-i', source, '-vf', 'vibrance', '-rbal', '-10', '-bbal', '-10', '-gbal', '-10'])
 
     def remove_filters(self):
         subprocess.call(['killall', '-SIGHUP', 'ffmpeg'])
