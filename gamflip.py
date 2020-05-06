@@ -34,7 +34,7 @@ class FlipswitchWindow(Gtk.Window):
         self.combobox.set_active(0)
 
         # Row 1 (Switch)
-        label1 = Gtk.Label(label="Webcam flip state")
+        label1 = Gtk.Label(label="Flip")
         label1.set_margin_bottom(10)
         grid.add(label1)
         self.warning.set_margin_left(75)
@@ -80,7 +80,6 @@ class FlipswitchWindow(Gtk.Window):
         Gtk.main_quit()
 
     def show_warning(self,gparam):
-        print(self.combobox_source.get_active_text())
         if self.combobox_source.get_active_text() == self.combobox.get_active_text() or self.combobox_source.get_active_text() == None:
             self.warning.show()
             self.flipswitch.set_sensitive(False)
