@@ -55,7 +55,7 @@ class GamflipUtilities():
             if flip:
                 subprocess.Popen(['ffmpeg', '-f', 'v4l2', '-i', source, '-vf', 'vflip', '-f', 'v4l2', loopback])
             else:
-                subprocess.Popen(['ffmpeg', '-f', 'v4l2', '-i', source, '-vf', 'vibrance', '-rbal', '-10', '-bbal', '-10', '-gbal', '-10'])
+                subprocess.Popen(['ffmpeg', '-f', 'v4l2', '-i', source, '-vf', 'eq=gamma=1.5:saturation=0', '-f', 'v4l2', loopback])
 
     def remove_filters(self):
         subprocess.call(['killall', '-SIGHUP', 'ffmpeg'])
