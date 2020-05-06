@@ -15,7 +15,8 @@ class FlipswitchWindow(Gtk.Window):
     combobox_source = Gtk.ComboBoxText()
     flipswitch = Gtk.Switch(name="Switch")
     warning = Gtk.Image.new_from_gicon(Gio.ThemedIcon(name="dialog-warning-symbolic"),Gtk.IconSize.BUTTON)
-    warning.set_tooltip_text("Webcam and Loopback cannot be the same device, please use v4l2-ctl --list-devices to determine which devices to use.")
+    warning.set_tooltip_text("No webcam is installed or loopback is the same device, please use v4l2-ctl --list-devices to determine which devices to use.")
+    utilities = gamflip_utilities.GamflipUtilities()
    
     def __init__(self):
 
@@ -27,8 +28,8 @@ class FlipswitchWindow(Gtk.Window):
         self.add(grid)
 
         # Create and add devices to dropdowns
-        self.combobox = gamflip_utilities.set_default_loopback(self.combobox)
-        self.combobox_source = gamflip_utilities.get_dev_list(self.combobox_source)
+        self.combobox = self.utilities.set_default_loopback(self.combobox)
+        self.combobox_source = self.utilities.get_dev_list(self.combobox_source)
         self.combobox_source.set_active(0)
         self.combobox.set_active(0)
 
@@ -69,17 +70,18 @@ class FlipswitchWindow(Gtk.Window):
     # Off: clean up running ffmpeg process
     def on_switch_activated(self, switch, gparam):
         if switch.get_active():
-            gamflip_utilities.execute_filters(self.combobox_source,self.combobox)
+            self.utilities.execute_filters(self.combobox_source,self.combobox)
         else:
-            gamflip_utilities.remove_filters()
+            self.utilities.remove_filters()
 
     def cleanup(self, destroy):
         if self.flipswitch.get_active():
-            gamflip_utilities.remove_filters()
+            self.utilities.remove_filters()
         Gtk.main_quit()
 
     def show_warning(self,gparam):
-        if self.combobox_source.get_active_text() == self.combobox.get_active_text():
+        print(self.combobox_source.get_active_text())
+        if self.combobox_source.get_active_text() == self.combobox.get_active_text() or self.combobox_source.get_active_text() == None:
             self.warning.show()
             self.flipswitch.set_sensitive(False)
         else:
