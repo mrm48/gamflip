@@ -10,7 +10,7 @@ GTK application for controlling flipping a webcam using a v4l2loopback device an
 	v4l2loopback
 
 ### TODO
-- [ ] Add support for more filters passed to ffmpeg (In Progress)
+- [ ] Add support for more filters passed to ffmpeg (In Progress, greyscale option completed)
 
 
 ![](gamflip.png)
