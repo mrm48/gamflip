@@ -6,6 +6,7 @@ class GamflipUtilities():
 
     dev_list_output = ""
     started_ffmpeg = False
+    ffmpeg = ""
 
     def __init__(self):
         self.dev_list_output = subprocess.check_output(['v4l2-ctl', '--list-devices']).decode("utf-8")
@@ -54,13 +55,13 @@ class GamflipUtilities():
             self.remove_filters()
 
         if flip and grey:
-            subprocess.Popen(['ffmpeg', '-f', 'v4l2', '-i', source, '-vf', 'eq=gamma=1.5:saturation=0,vflip', '-f', 'v4l2', loopback])
+            self.ffmpeg = subprocess.Popen(['ffmpeg', '-f', 'v4l2', '-i', source, '-vf', 'eq=gamma=1.5:saturation=0,vflip', '-f', 'v4l2', loopback])
         else:
             if flip:
-                subprocess.Popen(['ffmpeg', '-f', 'v4l2', '-i', source, '-vf', 'vflip', '-f', 'v4l2', loopback])
+                self.ffmpeg = subprocess.Popen(['ffmpeg', '-f', 'v4l2', '-i', source, '-vf', 'vflip', '-f', 'v4l2', loopback])
             else:
-                subprocess.Popen(['ffmpeg', '-f', 'v4l2', '-i', source, '-vf', 'eq=gamma=1.5:saturation=0', '-f', 'v4l2', loopback])
+                self.ffmpeg = subprocess.Popen(['ffmpeg', '-f', 'v4l2', '-i', source, '-vf', 'eq=gamma=1.5:saturation=0', '-f', 'v4l2', loopback])
         self.started_ffmpeg = True
 
     def remove_filters(self):
-        subprocess.call(['killall', '-SIGHUP', 'ffmpeg'])
+        self.ffmpeg.kill()
