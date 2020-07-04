@@ -1,6 +1,5 @@
-# main.py
-# Shows the main window, unless kernel modules are not running or dependencies are not met
-# TODO: Try to add support for multiple video filters
+# gamflip_control.py
+# Shows the main window, unless there is no camera, kernel modules are not running or dependencies are not met
 
 import gi
 gi.require_version("Gtk", "3.0")
