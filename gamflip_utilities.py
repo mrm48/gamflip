@@ -9,14 +9,6 @@ class GamflipUtilities():
     ffmpeg = ""
     init_output = ""
 
-    def __init__(self):
-        try:
-            self.dev_list_output = subprocess.check_output(['v4l2-ctl', '--list-devices']).decode("utf-8")
-        except FileNotFoundError:
-            self.init_output = "Cannot find v4l2-ctl"
-        except subprocess.CalledProcessError:
-            self.init_output = "No webcam found"
-
     def get_dev_list(self,combobox):
         for device in self.dev_list_output.splitlines():
             if "/dev/" in device:

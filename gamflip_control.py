@@ -9,6 +9,7 @@ import gamflip
 import gamflip_utilities
 import gamflip_error
 import subprocess
+import os
 
 class GamflipControl():
 
@@ -56,9 +57,5 @@ class GamflipControl():
             return mod  
     
     def check_camera(self):
-        try:
-            dev_list_output = subprocess.check_output(['v4l2-ctl', '--list-devices']).decode("utf-8")
-        except FileNotFoundError:
-            self.init_output = "Cannot find v4l2-ctl"
-        except subprocess.CalledProcessError:
+        if not os.path.isfile('/dev/video0'):
             self.init_output = "No webcam found"
