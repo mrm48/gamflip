@@ -8,12 +8,17 @@ class GamflipUtilities():
     started_ffmpeg = False
     ffmpeg = ""
     init_output = ""
+    loopback_device = ""
 
-    def get_dev_list(self,combobox):
-        for device in self.dev_list_output.splitlines():
-            if "/dev/" in device:
-                combobox.append_text(device.strip()) 
-        return combobox 
+    def get_dev_list(self, combobox):
+        list_devices = subprocess.Popen(['v4l2-ctl', '--list-devices'], stdout=subprocess.PIPE)
+        dev_loopback = subprocess.check_output(['grep', '/dev/'],stdin=list_devices.stdout)
+        list_devices.wait()
+        dev_loopback = dev_loopback.decode("utf-8").strip()
+        for device in dev_loopback.splitlines():
+            if device.strip() != self.loopback_device:
+                combobox.append_text(device.strip())
+        return combobox
 
     def set_default_loopback(self, combobox):
         list_devices = subprocess.Popen(['v4l2-ctl', '--list-devices'], stdout=subprocess.PIPE)
@@ -21,12 +26,9 @@ class GamflipUtilities():
         dev_loopback = subprocess.check_output(['grep', '/dev/'],stdin=loopback.stdout)
         list_devices.wait()
         loopback.wait()
-        dev_loopback = dev_loopback.decode("utf-8").strip()
-        combobox.append_text(dev_loopback)
-        for device in self.dev_list_output.splitlines():
-            if "/dev/" in device and device.strip() != dev_loopback:
-                combobox.append_text(device.strip()) 
-        return combobox 
+        self.loopback_device = dev_loopback.decode("utf-8").strip()
+        combobox.append_text(self.loopback_device)
+        return combobox
 
     def execute_filters(self, flip, grey, source, loopback):
         if self.started_ffmpeg:
