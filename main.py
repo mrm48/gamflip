@@ -3,7 +3,4 @@
 
 import gamflip_control
 
-
 control = gamflip_control.GamflipControl()
-
-
