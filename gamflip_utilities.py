@@ -4,10 +4,8 @@ import subprocess
 
 class GamflipUtilities():
 
-    dev_list_output = ""
     started_ffmpeg = False
     ffmpeg = ""
-    init_output = ""
     loopback_device = ""
 
     # Get list of potential cameras, filter out the loopback device
