@@ -15,10 +15,10 @@ class GamflipErrorWindow(Gtk.Window):
         vbox = Gtk.VBox(spacing=6)
         self.add(vbox)
 
-        if cam_check == "":
-            label = Gtk.Label(label="Camera: Found")
+        if cam_check == "Found":
+            label = Gtk.Label(label="Camera: Detected")
         else:
-            label = Gtk.Label(label="Camera: Not Found")
+            label = Gtk.Label(label="Camera: Not detected")
         vbox.pack_start(label, True, True, 0)
         label = Gtk.Label(label="Cannot launch, missing dependencies: " + dep_check)
         vbox.pack_start(label, True, True, 0)

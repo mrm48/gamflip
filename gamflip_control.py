@@ -57,5 +57,8 @@ class GamflipControl():
             return mod  
     
     def check_camera(self):
-        if not os.path.isfile('/dev/video0'):
-            self.init_output = "No webcam found"
+        if os.path.exists("/dev/video0") != True:
+            #self.init_output = "No webcam found"
+            return "Not found"
+        else:
+            return "Found"
