@@ -16,11 +16,18 @@ class GamflipControl():
     utilities = gamflip_utilities.GamflipUtilities()
 
     def __init__(self):
+
         # check dependencies
         dep_check = ""
         dep_check = self.check_dependency("ffmpeg", dep_check)
         dep_check = self.check_dependency("v4l2-ctl", dep_check)
+        if len(dep_check) == 0:
+            dep_check = "Found"
+
+        # check kernel modules
         mod_check = self.check_module("v4l2loopback")
+
+        # check for a webcam
         cam_check = self.check_camera()
     
         # Render the window if all dependencies are met
@@ -52,7 +59,7 @@ class GamflipControl():
     def check_module(self, mod):
         modules_running = subprocess.check_output(['lsmod'])
         if mod in modules_running.decode("utf-8"):
-            return "all required modules found"
+            return "Found"
         else:
             return mod  
     
