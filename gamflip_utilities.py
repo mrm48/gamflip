@@ -42,18 +42,29 @@ class GamflipUtilities():
         combobox.append_text(self.loopback_device)
         return combobox
 
-    # Apply filters
+    # Apply filters, need to ensure nothing happens when no filters are selected
     def execute_filters(self, flip, grey, source, loopback):
+        
+        # kill ffmpeg before applying different filters, if it's already been started by gamflip
         if self.started_ffmpeg:
             self.remove_filters()
-
+            
+        # Apply both filters
         if flip and grey:
             self.ffmpeg = subprocess.Popen(['ffmpeg', '-f', 'v4l2', '-i', source, '-vf', 'eq=gamma=1.5:saturation=0,vflip', '-f', 'v4l2', loopback])
+
+        # Only one filter is checked, apply just that one
         else:
+
+            # Apply only flipped output
             if flip:
                 self.ffmpeg = subprocess.Popen(['ffmpeg', '-f', 'v4l2', '-i', source, '-vf', 'vflip', '-f', 'v4l2', loopback])
+
+            # Apply only greyscale output
             else:
                 self.ffmpeg = subprocess.Popen(['ffmpeg', '-f', 'v4l2', '-i', source, '-vf', 'eq=gamma=1.5:saturation=0', '-f', 'v4l2', loopback])
+
+        # Set a flag to denote that ffmpeg was started by gamflip, therefore kill it if reapplying different filters
         self.started_ffmpeg = True
 
     # Remove filters by terminating the ffmpeg process
