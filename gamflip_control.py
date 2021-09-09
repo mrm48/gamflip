@@ -31,7 +31,7 @@ class GamflipControl():
         cam_check = self.check_camera()
     
         # Render the window if all dependencies are met
-        if len(dep_check) == 0 and mod_check == "all required modules found":
+        if dep_check == "Found" and mod_check == "Found":
             window = gamflip.FlipswitchWindow()
             window.connect("destroy", window.cleanup)
             window.show_all()
