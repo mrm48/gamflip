@@ -3,8 +3,9 @@
 GTK application for controlling flipping a webcam using a v4l2loopback device and ffmpeg. 
 
 ** Dependencies
-	v4l2-ctl
 	ffmpeg
+    v4l2-ctl
+    Some utilities that are usually installed by default in most Linux distributions: sed, lsmod, grep
 
 ** Required running kernel modules
 	v4l2loopback
