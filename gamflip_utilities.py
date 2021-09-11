@@ -52,20 +52,17 @@ class GamflipUtilities():
         # Apply both filters
         if flip and grey:
             self.ffmpeg = subprocess.Popen(['ffmpeg', '-f', 'v4l2', '-i', source, '-vf', 'eq=gamma=1.5:saturation=0,vflip', '-f', 'v4l2', loopback])
+            self.started_ffmpeg = True
 
-        # Only one filter is checked, apply just that one
-        else:
+        # Apply only flipped output 
+        elif flip:
+            self.ffmpeg = subprocess.Popen(['ffmpeg', '-f', 'v4l2', '-i', source, '-vf', 'vflip', '-f', 'v4l2', loopback])
+            self.started_ffmpeg = True
 
-            # Apply only flipped output
-            if flip:
-                self.ffmpeg = subprocess.Popen(['ffmpeg', '-f', 'v4l2', '-i', source, '-vf', 'vflip', '-f', 'v4l2', loopback])
-
-            # Apply only greyscale output
-            else:
-                self.ffmpeg = subprocess.Popen(['ffmpeg', '-f', 'v4l2', '-i', source, '-vf', 'eq=gamma=1.5:saturation=0', '-f', 'v4l2', loopback])
-
-        # Set a flag to denote that ffmpeg was started by gamflip, therefore kill it if reapplying different filters
-        self.started_ffmpeg = True
+        # Apply only greyscale output
+        elif grey:
+            self.ffmpeg = subprocess.Popen(['ffmpeg', '-f', 'v4l2', '-i', source, '-vf', 'eq=gamma=1.5:saturation=0', '-f', 'v4l2', loopback])
+            self.started_ffmpeg = True
 
     # Remove filters by terminating the ffmpeg process
     def remove_filters(self):
