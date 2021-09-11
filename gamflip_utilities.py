@@ -64,6 +64,11 @@ class GamflipUtilities():
             self.ffmpeg = subprocess.Popen(['ffmpeg', '-f', 'v4l2', '-i', source, '-vf', 'eq=gamma=1.5:saturation=0', '-f', 'v4l2', loopback])
             self.started_ffmpeg = True
 
+        # Apply no filters
+        else:
+            self.ffmpeg = subprocess.Popen(['ffmpeg', '-f', 'v4l2', '-i', source, '-f', 'v4l2', loopback])
+            self.started_ffmpeg = True
+
     # Remove filters by terminating the ffmpeg process
     def remove_filters(self):
         self.ffmpeg.kill()

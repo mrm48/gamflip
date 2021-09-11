@@ -82,14 +82,10 @@ class FlipswitchWindow(Gtk.Window):
     # On: Use ffmpeg to flip the video
     # Off: clean up running ffmpeg process
     def on_switch_activated(self, switch, gparam):
-        if switch.get_active():
-            self.utilities.execute_filters(flip=self.flipswitch.get_active(), grey=self.greyswitch.get_active(), source=self.combobox_source.get_active_text(), loopback=self.combobox.get_active_text())
-        else:
-            self.utilities.remove_filters()
+        self.utilities.execute_filters(flip=self.flipswitch.get_active(), grey=self.greyswitch.get_active(), source=self.combobox_source.get_active_text(), loopback=self.combobox.get_active_text())
 
     def cleanup(self, destroy):
-        if self.flipswitch.get_active():
-            self.utilities.remove_filters()
+        self.utilities.remove_filters()
         Gtk.main_quit()
 
     def show_warning(self,gparam):

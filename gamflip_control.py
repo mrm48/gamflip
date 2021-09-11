@@ -39,6 +39,7 @@ class GamflipControl():
             Gtk.main()
         else:
             window = gamflip_error.GamflipErrorWindow(cam_check,dep_check,mod_check)
+            window.connect("destroy", self.utilities.remove_filters)
             window.connect("destroy", Gtk.main_quit)
             window.show_all()
             Gtk.main()
