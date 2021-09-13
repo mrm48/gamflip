@@ -71,4 +71,5 @@ class GamflipUtilities():
 
     # Remove filters by terminating the ffmpeg process
     def remove_filters(self):
-        self.ffmpeg.kill()
+        if self.started_ffmpeg:
+            self.ffmpeg.kill()
