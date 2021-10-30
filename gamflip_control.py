@@ -55,15 +55,15 @@ class GamflipControl():
             else:
                 return dep_check + ", " + dep
 
-
     # Check for running modules - lsmod will error out if the module is not running
     def check_module(self, mod):
         modules_running = subprocess.check_output(['lsmod'])
         if mod in modules_running.decode("utf-8"):
             return "Found"
         else:
-            return mod  
-    
+            return mod
+
+    # Check if a camera is available - if not display as an error
     def check_camera(self):
         if os.path.exists("/dev/video0") != True:
             return "Not found"
