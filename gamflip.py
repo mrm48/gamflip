@@ -11,6 +11,7 @@ import gamflip_utilities
 # Create a window with a single switch to flip the webcam
 class FlipswitchWindow(Gtk.Window):
 
+    # Setup widgets that user will interact with
     combobox = Gtk.ComboBoxText()
     combobox_source = Gtk.ComboBoxText()
     flipswitch = Gtk.Switch(name="Switch")
@@ -18,7 +19,7 @@ class FlipswitchWindow(Gtk.Window):
     warning = Gtk.Image.new_from_gicon(Gio.ThemedIcon(name="dialog-warning-symbolic"),Gtk.IconSize.BUTTON)
     warning.set_tooltip_text("No webcam is installed or loopback is the same device, please use v4l2-ctl --list-devices to determine which devices to use.")
     utilities = gamflip_utilities.GamflipUtilities()
-   
+    
     def __init__(self):
 
         # Create Window and Grid
@@ -34,7 +35,7 @@ class FlipswitchWindow(Gtk.Window):
         self.combobox_source.set_active(0)
         self.combobox.set_active(0)
 
-        # Row 1 (Switch)
+        # Row 1 (Flip cam switch)
         label1 = Gtk.Label(label="Flip")
         label1.set_margin_bottom(10)
         grid.add(label1)
@@ -50,6 +51,7 @@ class FlipswitchWindow(Gtk.Window):
         self.flipswitch.set_active(False)
         grid.attach_next_to(self.flipswitch,self.warning,Gtk.PositionType.RIGHT,2,1)
 
+        # Row 2 (Greyscale switch)
         label_greyswitch = Gtk.Label(label="Greyscale")
         label_greyswitch.set_margin_bottom(10)
         grid.attach_next_to(label_greyswitch,label1,Gtk.PositionType.BOTTOM,1,2)
@@ -62,7 +64,7 @@ class FlipswitchWindow(Gtk.Window):
         self.greyswitch.set_active(False)
         grid.attach_next_to(self.greyswitch,label_greyswitch,Gtk.PositionType.RIGHT,2,2)
         
-        # Row 2 - Source (Webcam)
+        # Row 3 - Source (Webcam)
         label2 = Gtk.Label(label="Webcam")
         label2.set_margin_bottom(5)
         self.combobox_source.set_margin_bottom(5)
@@ -71,7 +73,7 @@ class FlipswitchWindow(Gtk.Window):
         grid.attach_next_to(label2,label_greyswitch,Gtk.PositionType.BOTTOM,1,2)
         grid.attach_next_to(self.combobox_source,label2,Gtk.PositionType.RIGHT,2,1)
         
-        # Row 3 - Loopback Device
+        # Row 4 - Loopback Device
         label3 = Gtk.Label(label="Loopback device")
         grid.attach_next_to(label3,label2,Gtk.PositionType.BOTTOM,1,2)
         self.combobox.set_margin_left(25)
